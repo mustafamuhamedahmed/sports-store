@@ -1,0 +1,63 @@
+.admin-page {
+    padding: 20px;
+  }
+  
+  .add-product-section, .manage-products-section {
+    margin-bottom: 30px;
+  }
+  
+  .add-product-section form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+  }
+  
+  .add-product-section input {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .add-product-section button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .add-product-section button:hover {
+    background-color: #218838;
+  }
+  
+  .manage-products-section table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .manage-products-section table th,
+  .manage-products-section table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .manage-products-section table th {
+    background-color: #f4f4f4;
+  }
+  
+  .manage-products-section button {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .manage-products-section button:hover {
+    background-color: #c82333;
+  }
+  

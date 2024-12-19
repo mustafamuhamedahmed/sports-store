@@ -1,0 +1,44 @@
+.dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .dashboard h1 {
+    font-size: 2em;
+    color: #333;
+  }
+  
+  .dashboard__info {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .dashboard__info h2 {
+    margin-bottom: 10px;
+  }
+  
+  .dashboard__info p {
+    font-size: 1.1em;
+    color: #555;
+  }
+  
+  .dashboard__actions {
+    margin-top: 20px;
+  }
+  
+  .dashboard__link {
+    display: inline-block;
+    margin-right: 20px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .dashboard__link:hover {
+    background-color: #0056b3;
+  }
+  

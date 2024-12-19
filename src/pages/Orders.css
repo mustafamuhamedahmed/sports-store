@@ -1,0 +1,41 @@
+.orders {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .orders h1 {
+    font-size: 2em;
+    color: #333;
+  }
+  
+  .orders__list {
+    margin-top: 20px;
+  }
+  
+  .orders__item {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .orders__item p {
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #555;
+  }
+  
+  .orders__button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .orders__button:hover {
+    background-color: #0056b3;
+  }
+  

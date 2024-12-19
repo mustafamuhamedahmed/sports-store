@@ -1,0 +1,35 @@
+.input-field {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-field__label {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .input-field__input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input-field__input:focus {
+    border-color: #f9d342;
+  }
+  
+  .input-field__input--error {
+    border-color: red;
+  }
+  
+  .input-field__error {
+    font-size: 0.8rem;
+    color: red;
+    margin-top: 5px;
+  }
+  
