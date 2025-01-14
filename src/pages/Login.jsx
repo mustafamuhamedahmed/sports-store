@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 
@@ -9,8 +10,10 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [userRole, setUserRole] = useState("");  // لحفظ دور المستخدم
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // لتتبع حالة المصادقة
+  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [userRole, setUserRole] = useState("");  
+
+  const navigate = useNavigate(); 
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -21,7 +24,7 @@ const Login = () => {
     return password.length >= 6;
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setError("");
     setIsEmailValid(true);
     setIsPasswordValid(true);
@@ -45,24 +48,42 @@ const Login = () => {
 
     setLoading(true);
 
-    setTimeout(() => {
-      console.log("Logging in with:", email, password);
-      setLoading(false);
+    try {
+      const response = await fetch("https://your-api-url.com/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-      // تحقق من البريد الإلكتروني وكلمة المرور بناءً على الدور
-      if (email === "customer@example.com" && password === "customer123") {
-        setUserRole("Customer");
+      const data = await response.json(); 
+
+      if (response.ok && data.success) {
+        const { role } = data;
+        setUserRole(role);
         setIsAuthenticated(true);
-        console.log("Access granted - Customer Page");
-      } else if (email === "admin@example.com" && password === "admin123") {
-        setUserRole("Admin");
-        setIsAuthenticated(true);
-        console.log("Access granted - Admin Page");
+        console.log("Access granted - " + role + " Page");
+
+        // التوجيه بناءً على الدور
+        if (role === "Customer") {
+          navigate("/ship"); 
+        } else if (role === "Admin") {
+          navigate("/admin"); 
+        }
       } else {
-        setError("Incorrect Username and Password.");
+        setError(data.message || "Incorrect email or password.");
         setIsAuthenticated(false);
       }
-    }, 1000);
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -106,10 +127,16 @@ const Login = () => {
             : "Access granted! Redirecting to Admin page..."}
         </div>
       )}
+      
+      {/* في حالة عدم المصادقة أو الخطأ */}
+      {!isAuthenticated && error && (
+        <div style={{ color: "red", marginTop: "20px" }}>
+          {error}
+        </div>
+      )}
     </div>
   );
 };
 
 export default Login;
-
 
