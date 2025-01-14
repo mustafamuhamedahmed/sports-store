@@ -9,7 +9,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);  // To track if the login is successful
+  const [isAuthenticated, setIsAuthenticated] = useState(false);  
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
