@@ -30,7 +30,6 @@ const Register = () => {
     setIsPasswordValid(true);
     setIsConfirmPasswordValid(true);
 
-    // التحقق من الحقول
     if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required.");
       return;
@@ -59,7 +58,6 @@ const Register = () => {
     setTimeout(() => {
       console.log("Registering with:", name, email, password);
       setLoading(false);
-      // محاكاة نجاح التسجيل
       setError("");
       console.log("User registered successfully!");
     }, 1000);
