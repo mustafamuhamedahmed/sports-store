@@ -9,7 +9,8 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);  
+  const [userRole, setUserRole] = useState("");  // لحفظ دور المستخدم
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // لتتبع حالة المصادقة
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,9 +49,15 @@ const Login = () => {
       console.log("Logging in with:", email, password);
       setLoading(false);
 
-      if (email === "user@example.com" && password === "password123") {
+      // تحقق من البريد الإلكتروني وكلمة المرور بناءً على الدور
+      if (email === "customer@example.com" && password === "customer123") {
+        setUserRole("Customer");
         setIsAuthenticated(true);
-        console.log("Access granted - Main Page");
+        console.log("Access granted - Customer Page");
+      } else if (email === "admin@example.com" && password === "admin123") {
+        setUserRole("Admin");
+        setIsAuthenticated(true);
+        console.log("Access granted - Admin Page");
       } else {
         setError("Incorrect Username and Password.");
         setIsAuthenticated(false);
@@ -91,10 +98,18 @@ const Login = () => {
         disabled={loading}
       />
 
-      {isAuthenticated && <div style={{ color: "green", marginTop: "20px" }}>Access granted! Redirecting to main page...</div>}
+      {/* عرض رسالة التحقق أو التوجيه بناءً على الدور */}
+      {isAuthenticated && (
+        <div style={{ color: "green", marginTop: "20px" }}>
+          {userRole === "Customer"
+            ? "Access granted! Redirecting to Customer page..."
+            : "Access granted! Redirecting to Admin page..."}
+        </div>
+      )}
     </div>
   );
 };
 
 export default Login;
+
 
