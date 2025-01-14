@@ -13,7 +13,6 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    // محاكاة جلب بيانات المستخدم
     const fetchUserData = () => {
       const currentUser = {
         name: "Mustafa Mohammed",
