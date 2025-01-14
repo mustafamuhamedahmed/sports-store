@@ -5,7 +5,7 @@ import "../styles/Dashboard.css";
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);  // لإظهار نموذج التعديل
+  const [isEditing, setIsEditing] = useState(false);  
   const [editedUser, setEditedUser] = useState({
     name: "",
     email: "",
@@ -22,7 +22,7 @@ const Dashboard = () => {
       };
 
       setUser(currentUser);
-      setEditedUser(currentUser);  // تعيين البيانات المعدلة أيضا
+      setEditedUser(currentUser); 
       setIsLoading(false);
     };
 
@@ -35,11 +35,11 @@ const Dashboard = () => {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setEditedUser(user);  // إعادة البيانات الأصلية
+    setEditedUser(user);  
   };
 
   const handleSaveEdit = () => {
-    setUser(editedUser);  // حفظ التغييرات
+    setUser(editedUser);  
     setIsEditing(false);
   };
 
