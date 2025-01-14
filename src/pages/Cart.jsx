@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; // إضافة useNavigate
+import { useLocation, useNavigate } from "react-router-dom"; 
 
 const Cart = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // تعريف التنقل
-  const initialCart = location.state?.cart || []; // سلة المشتريات الافتراضية
+  const navigate = useNavigate(); 
+  const initialCart = location.state?.cart || []; 
   const [cart, setCart] = useState(initialCart);
 
   const handleRemoveProduct = (productId) => {
