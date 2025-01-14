@@ -7,7 +7,7 @@ const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 }; // الحصول على بيانات السلة
+  const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 }; 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
