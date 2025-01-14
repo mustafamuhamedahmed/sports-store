@@ -1,123 +1,151 @@
 import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import InputField from "../components/InputField";
-import Button from "../components/Button";
+import { useLocation, useNavigate } from "react-router-dom"; 
+import InputField from "../components/InputField"; 
+import Button from "../components/Button"; 
 
-// دالة للتحقق من صحة بيانات الدفع
-const validatePaymentForm = (paymentData) => {
-  const errors = {};
-  if (!paymentData.cardNumber) errors.cardNumber = "Card number is required";
-  if (!paymentData.expiryDate) errors.expiryDate = "Expiry date is required";
-  if (!paymentData.cvc) errors.cvc = "CVC is required";
-  return errors;
-};
-
-const Payment = () => {
+const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 };
-
-  const [paymentData, setPaymentData] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvc: "",
+  
+  const { cart, totalPrice } = location.state || { cart: [], totalPrice: 0 }; // الحصول على بيانات السلة
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    address: "",
+    phone: "",
   });
 
-  const [errors, setErrors] = useState({});
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+    address: false,
+    phone: false,
+  });
 
-  const handleChange = (e) => {
-    setPaymentData({ ...paymentData, [e.target.name]: e.target.value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+
+    setErrors({
+      ...errors,
+      [name]: false,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let isValid = true;
+    const newErrors = { ...errors };
 
-    // التحقق من صحة البيانات
-    const paymentErrors = validatePaymentForm(paymentData);
-    if (Object.keys(paymentErrors).length > 0) {
-      setErrors(paymentErrors);
-      return;
+    if (!formData.name) {
+      newErrors.name = true;
+      isValid = false;
+    }
+    if (!formData.email) {
+      newErrors.email = true;
+      isValid = false;
+    }
+    if (!formData.address) {
+      newErrors.address = true;
+      isValid = false;
+    }
+    if (!formData.phone) {
+      newErrors.phone = true;
+      isValid = false;
     }
 
-    // محاكاة عملية الدفع
-    setIsProcessing(true);
-    setTimeout(() => {
-      console.log("Payment Processed:", { paymentData, cart });
-      alert("Payment Successful! Thank you for your order.");
-      setIsProcessing(false);
-      navigate("/thank-you"); // الانتقال إلى صفحة الشكر بعد الدفع
-    }, 2000); // محاكاة عملية الدفع
+    setErrors(newErrors);
+
+    if (isValid) {
+      navigate("/payment", {
+        state: { 
+          cart,
+          totalPrice,
+          formData 
+        }
+      });
+    } else {
+      alert("Please fill out all fields correctly.");
+    }
   };
 
   return (
-    <div className="payment-container">
-      <h1>Payment</h1>
-      {cart.length > 0 ? (
-        <>
-          <p>Please review your order and enter payment details.</p>
-          <ul className="checkout-cart-list">
-            {cart.map((product) => (
-              <li key={product.id} className="checkout-cart-item">
-                <div className="checkout-item-details">
-                  <h3>{product.name}</h3>
-                  <p>Price: ${product.price.toFixed(2)}</p>
-                  <p>Quantity: {product.quantity}</p>
-                </div>
-                <div className="checkout-item-total">
-                  <p>Total: ${(product.price * product.quantity).toFixed(2)}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <div className="checkout-summary">
-            <p>Total Price: ${totalPrice.toFixed(2)}</p>
-            <form onSubmit={handleSubmit} className="payment-form">
+    <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
+      <h1>Checkout</h1>
+      
+      {/* Order Summary */}
+      <div style={{ marginBottom: "20px" }}>
+        <h2>Order Summary</h2>
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {cart.map((product) => (
+            <li
+              key={product.id}
+              style={{
+                marginBottom: "10px",
+                padding: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
               <div>
-                <InputField
-                  type="text"
-                  name="cardNumber"
-                  placeholder="Card Number"
-                  value={paymentData.cardNumber}
-                  onChange={handleChange}
-                  required
-                  isValid={!errors.cardNumber}
-                />
-                {errors.cardNumber && <p className="error-message">{errors.cardNumber}</p>}
+                <h3 style={{ margin: 0 }}>{product.name}</h3>
+                <p style={{ margin: "5px 0" }}>
+                  Price: ${product.price} x {product.quantity}
+                </p>
+                <p style={{ fontWeight: "bold" }}>Subtotal: ${product.price * product.quantity}</p>
               </div>
-              <div>
-                <InputField
-                  type="text"
-                  name="expiryDate"
-                  placeholder="Expiry Date (MM/YY)"
-                  value={paymentData.expiryDate}
-                  onChange={handleChange}
-                  required
-                  isValid={!errors.expiryDate}
-                />
-                {errors.expiryDate && <p className="error-message">{errors.expiryDate}</p>}
-              </div>
-              <div>
-                <InputField
-                  type="text"
-                  name="cvc"
-                  placeholder="CVC"
-                  value={paymentData.cvc}
-                  onChange={handleChange}
-                  required
-                  isValid={!errors.cvc}
-                />
-                {errors.cvc && <p className="error-message">{errors.cvc}</p>}
-              </div>
-              <Button type="submit" disabled={isProcessing} label={isProcessing ? "Processing..." : "Pay Now"} />
-            </form>
-          </div>
-        </>
-      ) : (
-        <p>Your cart is empty. Please go back and add items to your cart.</p>
-      )}
+            </li>
+          ))}
+        </ul>
+        <p style={{ fontWeight: "bold", textAlign: "right" }}>
+          Total Price: ${totalPrice.toFixed(2)}
+        </p>
+      </div>
+
+      {/* Shipping Information Form */}
+      <h2>Shipping Information</h2>
+      <form onSubmit={handleSubmit}>
+        <InputField
+          label="Full Name"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          required
+          error={errors.name}
+        />
+        <InputField
+          label="Email Address"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
+          error={errors.email}
+        />
+        <InputField
+          label="Shipping Address"
+          name="address"
+          value={formData.address}
+          onChange={handleInputChange}
+          required
+          error={errors.address}
+        />
+        <InputField
+          label="Phone Number"
+          name="phone"
+          value={formData.phone}
+          onChange={handleInputChange}
+          required
+          error={errors.phone}
+        />
+        <Button type="submit" label="Proceed to Payment" />
+      </form>
     </div>
   );
 };
 
-export default Payment;
+export default Checkout;
