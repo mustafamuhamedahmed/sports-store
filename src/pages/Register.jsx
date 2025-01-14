@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 
@@ -9,10 +10,12 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isNameValid, setIsNameValid] = useState(true);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
+  const [isNameValid, setIsNameValid] = useState(true);
+
+  const navigate = useNavigate(); 
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,12 +26,12 @@ const Register = () => {
     return password.length >= 6;
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     setError("");
-    setIsNameValid(true);
     setIsEmailValid(true);
     setIsPasswordValid(true);
     setIsConfirmPasswordValid(true);
+    setIsNameValid(true);
 
     if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required.");
@@ -55,12 +58,34 @@ const Register = () => {
 
     setLoading(true);
 
-    setTimeout(() => {
-      console.log("Registering with:", name, email, password);
+    try {
+      const response = await fetch("https://your-api-url.com/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json(); 
+
+      if (response.ok && data.success) {
+        // إذا كانت الاستجابة ناجحة
+        console.log("Registration successful:", data);
+        navigate("/login"); 
+      } else {
+        setError(data.message || "Registration failed.");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+      console.error(error);
+    } finally {
       setLoading(false);
-      setError("");
-      console.log("User registered successfully!");
-    }, 1000);
+    }
   };
 
   return (
@@ -118,9 +143,12 @@ const Register = () => {
         disabled={loading}
       />
 
-      <div style={{ marginTop: "20px", color: "green" }}>
-        {/* قد يتم عرض رسالة تأكيد التسجيل هنا */}
-      </div>
+      {/* عرض رسالة تأكيد التسجيل أو الخطأ */}
+      {error && !loading && (
+        <div style={{ color: "red", marginTop: "20px" }}>
+          {error}
+        </div>
+      )}
     </div>
   );
 };
