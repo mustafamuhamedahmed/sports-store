@@ -18,9 +18,9 @@ const PostCoupons = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // بدء عملية التحميل
+    setIsLoading(true);
     try {
-      setAddError(null); // إعادة تعيين الخطأ
+      setAddError(null); 
       const response = await fetch("https://api.example.com/coupons", {
         method: "POST",
         headers: {
@@ -31,16 +31,14 @@ const PostCoupons = () => {
 
       if (!response.ok) throw new Error("Failed to add coupon");
 
-      // إعادة تعيين بيانات الكوبون بعد إضافته
       setCouponData({ code: "", discount: "", expiryDate: "" });
 
-      // تحميل الكوبونات من جديد بعد إضافة كوبون جديد
       const updatedCoupons = await fetchCoupons();
       setCoupons(updatedCoupons);
     } catch (error) {
-      setAddError(error.message); // تخزين الخطأ إذا حدث
+      setAddError(error.message); 
     } finally {
-      setIsLoading(false); // إيقاف حالة التحميل
+      setIsLoading(false); 
     }
   };
 
@@ -51,17 +49,17 @@ const PostCoupons = () => {
       const data = await response.json();
       return data;
     } catch (error) {
-      setAddError(error.message); // تخزين الخطأ إذا حدث
+      setAddError(error.message); 
       return [];
     }
   };
 
   useEffect(() => {
     const loadCoupons = async () => {
-      setIsLoading(true); // بدء التحميل
+      setIsLoading(true); 
       const loadedCoupons = await fetchCoupons();
       setCoupons(loadedCoupons);
-      setIsLoading(false); // إيقاف التحميل
+      setIsLoading(false); 
     };
 
     loadCoupons();
