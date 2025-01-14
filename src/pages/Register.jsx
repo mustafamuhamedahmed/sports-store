@@ -74,7 +74,6 @@ const Register = () => {
       const data = await response.json(); 
 
       if (response.ok && data.success) {
-        // إذا كانت الاستجابة ناجحة
         console.log("Registration successful:", data);
         navigate("/login"); 
       } else {
