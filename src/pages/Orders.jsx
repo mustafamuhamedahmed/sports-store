@@ -6,6 +6,7 @@ import Button from "../components/Button";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,13 +50,25 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredOrders = orders.filter(order => {
+    const searchTerm = searchQuery.toLowerCase();
+    return (
+      order.id.toString().includes(searchTerm) ||
+      order.status.toLowerCase().includes(searchTerm)
+    );
+  });
+
+  const handleViewDetails = (order) => {
+    navigate("/view-details", { state: { order } });
+  };
+
   if (isLoading) {
     return <div>Loading your orders...</div>;
   }
-
-  const handleViewDetails = (order) => {
-    navigate("/orders/details", { state: { order } });
-  };
 
   return (
     <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
@@ -65,24 +78,29 @@ const Orders = () => {
         label="Search Orders"
         name="search"
         placeholder="Search by Order ID or Status"
-        onChange={(e) => {
-        }}
+        value={searchQuery}
+        onChange={handleSearch}
       />
       
       <div style={{ marginTop: "20px" }}>
-        {orders.map((order) => (
-          <div key={order.id} style={{ marginBottom: "20px", padding: "10px", border: "1px solid #ccc", borderRadius: "5px" }}>
-            <p><strong>Order ID:</strong> {order.id}</p>
-            <p><strong>Date:</strong> {order.date}</p>
-            <p><strong>Total:</strong> ${order.total}</p>
-            <p><strong>Status:</strong> {order.status}</p>
-            <Button label="View Details" onClick={() => handleViewDetails(order)} />
-          </div>
-        ))}
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map((order) => (
+            <div key={order.id} style={{ marginBottom: "20px", padding: "10px", border: "1px solid #ccc", borderRadius: "5px" }}>
+              <p><strong>Order ID:</strong> {order.id}</p>
+              <p><strong>Date:</strong> {order.date}</p>
+              <p><strong>Total:</strong> ${order.total}</p>
+              <p><strong>Status:</strong> {order.status}</p>
+              <Button label="View Details" onClick={() => handleViewDetails(order)} />
+            </div>
+          ))
+        ) : (
+          <p>No orders found</p>
+        )}
       </div>
     </div>
   );
 };
 
 export default Orders;
+
 
