@@ -1,0 +1,198 @@
+/* إعدادات الخطوط */
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+  
+  /* ضبط الحواف والمسافات */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+  }
+  
+  /* عناوين النصوص */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #1e1e2f;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  /* الروابط */
+  a {
+    color: #f9d342;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  a:hover {
+    color: #e5be2c;
+  }
+  
+  /* أزرار التنسيق الافتراضية */
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+  
+  /* الحاويات العامة */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* الشبكة العامة */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+  }
+  
+  .col {
+    flex: 1;
+    padding: 10px;
+  }
+  
+  .col-1 {
+    flex: 0 0 8.3333%;
+  }
+  
+  .col-2 {
+    flex: 0 0 16.6667%;
+  }
+  
+  .col-3 {
+    flex: 0 0 25%;
+  }
+  
+  .col-4 {
+    flex: 0 0 33.3333%;
+  }
+  
+  .col-6 {
+    flex: 0 0 50%;
+  }
+  
+  .col-12 {
+    flex: 0 0 100%;
+  }
+  
+  /* أزرار التحذير والنجاح */
+  .btn-primary {
+    background-color: #f9d342;
+    color: #1e1e2f;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-primary:hover {
+    background-color: #e5be2c;
+  }
+  
+  .btn-danger {
+    background-color: red;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-danger:hover {
+    background-color: darkred;
+  }
+  
+  /* الرسائل */
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  /* التنسيقات الافتراضية للصور */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 5px;
+  }
+  
+  /* محاذاة النصوص */
+  .text-center {
+    text-align: center;
+  }
+  
+  .text-right {
+    text-align: right;
+  }
+  
+  .text-left {
+    text-align: left;
+  }
+  
+  /* فواصل */
+  .separator {
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+  }
+  
+  /* قواعد الاستجابة */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+  
+    .row {
+      flex-direction: column;
+    }
+  
+    h1 {
+      font-size: 1.75rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
