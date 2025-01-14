@@ -58,7 +58,7 @@ const ProductDetailsPage = () => {
     }
   ];
 
-  const product = products.find((p) => p.id === parseInt(productId)); // البحث عن المنتج
+  const product = products.find((p) => p.id === parseInt(productId)); 
   const [reviews, setReviews] = useState(product?.reviews || []);
   const [newReview, setNewReview] = useState("");
   const [reviewAuthor, setReviewAuthor] = useState("");
@@ -83,10 +83,10 @@ const ProductDetailsPage = () => {
       setNewReview("");
       setReviewAuthor("");
       setSuccessMessage("Your review has been added successfully!");
-      setTimeout(() => setSuccessMessage(""), 3000); // إخفاء الرسالة بعد 3 ثوانٍ
+      setTimeout(() => setSuccessMessage(""), 3000);
     } else {
       setSuccessMessage("Please provide both your name and review text.");
-      setTimeout(() => setSuccessMessage(""), 3000); // إخفاء الرسالة بعد 3 ثوانٍ
+      setTimeout(() => setSuccessMessage(""), 3000); 
     }
   };
 
