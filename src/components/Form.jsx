@@ -20,7 +20,6 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // تحقق من صحة البيانات
     const newErrors = {};
     if (!formData.email) {
       newErrors.email = "Email is required.";
@@ -30,7 +29,6 @@ const Form = () => {
     }
     setErrors(newErrors);
 
-    // إذا لم تكن هناك أخطاء، يمكنك إرسال البيانات
     if (Object.keys(newErrors).length === 0) {
       console.log("Form submitted:", formData);
     }
