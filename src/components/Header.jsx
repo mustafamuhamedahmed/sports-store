@@ -16,7 +16,7 @@ const Header = () => {
         <a href="/login" className="header__button">Login</a>
         <a href="/register" className="header__button">Register</a>
         <a href="/cart" className="header__cart">
-          🛒 Cart <span className="header__cart-count">2</span>
+          🛒 Cart <span className="header__cart-count">6</span>
         </a>
       </div>
     </header>
