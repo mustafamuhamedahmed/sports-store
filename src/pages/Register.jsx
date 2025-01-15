@@ -142,7 +142,6 @@ const Register = () => {
         disabled={loading}
       />
 
-      {/* عرض رسالة تأكيد التسجيل أو الخطأ */}
       {error && !loading && (
         <div style={{ color: "red", marginTop: "20px" }}>
           {error}
