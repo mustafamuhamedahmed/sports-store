@@ -68,7 +68,6 @@ const Login = () => {
         setIsAuthenticated(true);
         console.log("Access granted - " + role + " Page");
 
-        // التوجيه بناءً على الدور
         if (role === "Customer") {
           navigate("/ship"); 
         } else if (role === "Admin") {
@@ -119,7 +118,6 @@ const Login = () => {
         disabled={loading}
       />
 
-      {/* عرض رسالة التحقق أو التوجيه بناءً على الدور */}
       {isAuthenticated && (
         <div style={{ color: "green", marginTop: "20px" }}>
           {userRole === "Customer"
@@ -128,7 +126,6 @@ const Login = () => {
         </div>
       )}
       
-      {/* في حالة عدم المصادقة أو الخطأ */}
       {!isAuthenticated && error && (
         <div style={{ color: "red", marginTop: "20px" }}>
           {error}
