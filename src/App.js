@@ -16,7 +16,7 @@ import Payment from "./pages/Payment";
 import PostCoupons from "./pages/PostCoupons";
 import Checkout from "./pages/Checkout";
 import About from "./pages/About";
-import { ToastContainer } from 'react-toastify'; // استيراد ToastContainer
+import { ToastContainer } from 'react-toastify'; 
 
 import "./styles/global.css";
 import "./styles/variables.css";
@@ -58,7 +58,7 @@ const App = () => {
             </main>
             <Footer />
           </div>
-          <ToastContainer /> {/* إضافة ToastContainer في أسفل التطبيق */}
+          <ToastContainer /> 
         </CartProvider>
       </AuthProvider>
     </Router>
