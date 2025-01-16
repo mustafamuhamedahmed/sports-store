@@ -104,7 +104,7 @@ const Orders = () => {
               <Button 
                 label="View Details" 
                 onClick={() => handleViewDetails(order)} 
-                style={{ marginTop: "10px" }} // إضافة هامش بين الزر وبقية المحتوى
+                style={{ marginTop: "10px" }}
               />
             </div>
           ))
