@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
-import InputField from "../components/InputField"; 
-import Button from "../components/Button"; 
+import { useNavigate } from "react-router-dom";
+import InputField from "../components/InputField";
+import Button from "../components/Button";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -9,6 +9,7 @@ const Orders = () => {
   const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate();
 
+  // محاكاة جلب الطلبات
   useEffect(() => {
     const fetchOrders = () => {
       const fetchedOrders = [
@@ -73,24 +74,42 @@ const Orders = () => {
   return (
     <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
       <h1>Your Orders</h1>
-      
+
+      {/* إضافة InputField للبحث */}
       <InputField
         label="Search Orders"
         name="search"
         placeholder="Search by Order ID or Status"
         value={searchQuery}
         onChange={handleSearch}
+        style={{ marginBottom: "20px" }} // إضافة هامش بين الـ InputField وبقية المحتوى
       />
       
+      {/* عرض قائمة الطلبات */}
       <div style={{ marginTop: "20px" }}>
         {filteredOrders.length > 0 ? (
           filteredOrders.map((order) => (
-            <div key={order.id} style={{ marginBottom: "20px", padding: "10px", border: "1px solid #ccc", borderRadius: "5px" }}>
+            <div
+              key={order.id}
+              style={{
+                marginBottom: "20px",
+                padding: "15px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              }}
+            >
               <p><strong>Order ID:</strong> {order.id}</p>
               <p><strong>Date:</strong> {order.date}</p>
               <p><strong>Total:</strong> ${order.total}</p>
               <p><strong>Status:</strong> {order.status}</p>
-              <Button label="View Details" onClick={() => handleViewDetails(order)} />
+              
+              {/* استخدام Button لعرض التفاصيل */}
+              <Button 
+                label="View Details" 
+                onClick={() => handleViewDetails(order)} 
+                style={{ marginTop: "10px" }} // إضافة هامش بين الزر وبقية المحتوى
+              />
             </div>
           ))
         ) : (
@@ -102,5 +121,4 @@ const Orders = () => {
 };
 
 export default Orders;
-
 
