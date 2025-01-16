@@ -9,7 +9,6 @@ const Orders = () => {
   const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate();
 
-  // محاكاة جلب الطلبات
   useEffect(() => {
     const fetchOrders = () => {
       const fetchedOrders = [
@@ -75,17 +74,15 @@ const Orders = () => {
     <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
       <h1>Your Orders</h1>
 
-      {/* إضافة InputField للبحث */}
       <InputField
         label="Search Orders"
         name="search"
         placeholder="Search by Order ID or Status"
         value={searchQuery}
         onChange={handleSearch}
-        style={{ marginBottom: "20px" }} // إضافة هامش بين الـ InputField وبقية المحتوى
+        style={{ marginBottom: "20px" }}
       />
       
-      {/* عرض قائمة الطلبات */}
       <div style={{ marginTop: "20px" }}>
         {filteredOrders.length > 0 ? (
           filteredOrders.map((order) => (
@@ -104,7 +101,6 @@ const Orders = () => {
               <p><strong>Total:</strong> ${order.total}</p>
               <p><strong>Status:</strong> {order.status}</p>
               
-              {/* استخدام Button لعرض التفاصيل */}
               <Button 
                 label="View Details" 
                 onClick={() => handleViewDetails(order)} 
