@@ -55,8 +55,8 @@ const Payment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsProcessing(true); 
-    setPaymentError(null); 
+    setIsProcessing(true);
+    setPaymentError(null);
 
     if (!validateForm()) {
       setIsProcessing(false);
@@ -77,10 +77,12 @@ const Payment = () => {
       alert("Payment successful!");
 
       setPaymentData({ name: "", cardNumber: "", expiryDate: "", cvv: "" });
+
+      navigate("/orders");
     } catch (error) {
       setPaymentError(error.message);
     } finally {
-      setIsProcessing(false); 
+      setIsProcessing(false);
     }
   };
 
