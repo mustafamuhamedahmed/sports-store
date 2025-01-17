@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
+
 const ProductDetailsPage = () => {
   const { productId } = useParams();
   const navigate = useNavigate(); 
@@ -58,7 +59,7 @@ const ProductDetailsPage = () => {
     }
   ];
 
-  const product = products.find((p) => p.id === parseInt(productId)); 
+  const product = products.find((p) => p.id === parseInt(productId)); // البحث عن المنتج
   const [reviews, setReviews] = useState(product?.reviews || []);
   const [newReview, setNewReview] = useState("");
   const [reviewAuthor, setReviewAuthor] = useState("");
@@ -83,10 +84,10 @@ const ProductDetailsPage = () => {
       setNewReview("");
       setReviewAuthor("");
       setSuccessMessage("Your review has been added successfully!");
-      setTimeout(() => setSuccessMessage(""), 3000);
+      setTimeout(() => setSuccessMessage(""), 3000); // إخفاء الرسالة بعد 3 ثوانٍ
     } else {
       setSuccessMessage("Please provide both your name and review text.");
-      setTimeout(() => setSuccessMessage(""), 3000); 
+      setTimeout(() => setSuccessMessage(""), 3000); // إخفاء الرسالة بعد 3 ثوانٍ
     }
   };
 
@@ -163,3 +164,4 @@ const ProductDetailsPage = () => {
 };
 
 export default ProductDetailsPage;
+
