@@ -48,7 +48,6 @@ const Shop = () => {
     <div>
       <h1>Shop</h1>
 
-      {/* خانة البحث */}
       <div className="search-container">
         <input
           type="text"
@@ -87,8 +86,7 @@ const Shop = () => {
               description={product.description}
               image={product.image || "/assets/images/default.jpg"}
               onAddToCart={() => addToCart(product)} // إضافة المنتج للسلة
-              onProductClick={() => navigate(`/products/${product.id}`)} // التنقل إلى صفحة تفاصيل المنتج
-
+              onProductClick={() => navigate(`/products/${product.id}`)} 
             />
           ))
         ) : (
