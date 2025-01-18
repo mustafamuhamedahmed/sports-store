@@ -69,7 +69,7 @@ const Login = () => {
         console.log("Access granted - " + role + " Page");
 
         if (role === "Customer") {
-          navigate("/ship"); 
+          navigate("/dashboard"); 
         } else if (role === "Admin") {
           navigate("/admin"); 
         }
@@ -121,7 +121,7 @@ const Login = () => {
       {isAuthenticated && (
         <div style={{ color: "green", marginTop: "20px" }}>
           {userRole === "Customer"
-            ? "Access granted! Redirecting to Customer page..."
+            ? "Access granted! Redirecting to Customer dashboard..."
             : "Access granted! Redirecting to Admin page..."}
         </div>
       )}
@@ -136,4 +136,3 @@ const Login = () => {
 };
 
 export default Login;
-
