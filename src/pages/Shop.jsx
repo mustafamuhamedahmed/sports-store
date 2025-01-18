@@ -11,12 +11,12 @@ const Shop = () => {
   const navigate = useNavigate(); 
 
   const products = useMemo(() => [
-    { id: 1, name: "Nike Shoes", price: 120, description: "High-quality running shoes from Nike.", image: "/assets/images/nike-shoes.jpg", category: "Shoes" },
-    { id: 2, name: "Adidas T-Shirt", price: 40, description: "Comfortable and stylish T-shirt by Adidas.", image: "/assets/images/adidas-shirt.jpg", category: "Clothing" },
-    { id: 3, name: "Rugby ball", price: 25, description: "Rugby ball.", image: "/assets/images/Rugby ball.jpg", category: "Sports" },
-    { id: 4, name: "Tennis racket", price: 35, description: "Tennis racket.", image: "/assets/images/Tennis racket.jpg", category: "Sports" },
-    { id: 5, name: "Puma Hat", price: 25, description: "Trendy Puma cap for casual wear.", image: "/assets/images/puma hat.jpg", category: "Clothing" },
-    { id: 6, name: "Basketball", price: 95, description: "Basketball.", image: "/assets/images/Basketball.jpg", category: "Sports" }
+    { id: 1, name: "Nike Shoes", price: 120, description: "High-quality running shoes from Nike.", image: "/assets/images/nike-shoes.jpg", category: "Shoes", availableQuantity: 10 },
+    { id: 2, name: "Adidas T-Shirt", price: 40, description: "Comfortable and stylish T-shirt by Adidas.", image: "/assets/images/adidas-shirt.jpg", category: "Clothing", availableQuantity: 5 },
+    { id: 3, name: "Rugby ball", price: 25, description: "Rugby ball.", image: "/assets/images/Rugby ball.jpg", category: "Sports", availableQuantity: 15 },
+    { id: 4, name: "Tennis racket", price: 35, description: "Tennis racket.", image: "/assets/images/Tennis racket.jpg", category: "Sports", availableQuantity: 8 },
+    { id: 5, name: "Puma Hat", price: 25, description: "Trendy Puma cap for casual wear.", image: "/assets/images/puma hat.jpg", category: "Clothing", availableQuantity: 20 },
+    { id: 6, name: "Basketball", price: 95, description: "Basketball.", image: "/assets/images/Basketball.jpg", category: "Sports", availableQuantity: 12 }
   ], []);
 
   const addToCart = useCallback((product) => {
@@ -25,8 +25,17 @@ const Shop = () => {
       if (!productExists) {
         const updatedCart = [...prevCart, { ...product, quantity: 1 }];
         return updatedCart;
+      } else {
+        const updatedCart = prevCart.map((item) =>
+          item.id === product.id
+            ? {
+                ...item,
+                quantity: Math.min(item.quantity + 1, product.availableQuantity), 
+              }
+            : item
+        );
+        return updatedCart;
       }
-      return prevCart; 
     });
   }, []);
 
@@ -85,8 +94,8 @@ const Shop = () => {
               price={product.price}
               description={product.description}
               image={product.image || "/assets/images/default.jpg"}
-              onAddToCart={() => addToCart(product)} // إضافة المنتج للسلة
-              onProductClick={() => navigate(`/products/${product.id}`)} 
+              onAddToCart={() => addToCart(product)} 
+              onProductClick={() => navigate(`/products/${product.id}`)}
             />
           ))
         ) : (
@@ -114,7 +123,7 @@ const Shop = () => {
           <ul>
             {cart.map((product) => (
               <li key={product.id}>
-                {product.name} - ${product.price}
+                {product.name} - ${product.price} x {product.quantity}
               </li>
             ))}
           </ul>
@@ -127,3 +136,4 @@ const Shop = () => {
 };
 
 export default Shop;
+
