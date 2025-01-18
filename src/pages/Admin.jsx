@@ -8,6 +8,7 @@ const Admin = () => {
     price: "",
     category: "",
     description: "",
+    availableQuantity: "",
   });
   const [products, setProducts] = useState([]);
   const [addError, setAddError] = useState(null);
@@ -31,12 +32,15 @@ const Admin = () => {
   }, []);
 
   const validateProduct = () => {
-    const { id, name, price, category, description } = newProduct;
-    if (!id || !name || !price || !category || !description) {
+    const { id, name, price, category, description, availableQuantity } = newProduct;
+    if (!id || !name || !price || !category || !description || !availableQuantity) {
       return "All fields are required!";
     }
     if (isNaN(price) || parseFloat(price) <= 0) {
       return "Price must be a positive number!";
+    }
+    if (isNaN(availableQuantity) || parseInt(availableQuantity) <= 0) {
+      return "Available quantity must be a positive integer!";
     }
     return null;
   };
@@ -53,23 +57,17 @@ const Admin = () => {
       setAddError(null);
       setAddSuccess(null);
 
-      const response = await fetch("https://example.com/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newProduct),
-      });
+      setProducts((prevProducts) => [...prevProducts, newProduct]);
 
-      if (!response.ok) {
-        throw new Error("Failed to add product");
-      }
-
-      const addedProduct = await response.json();
-
-      setProducts((prevProducts) => [...prevProducts, addedProduct]);
       setAddSuccess("Product added successfully!");
-      setNewProduct({ id: "", name: "", price: "", category: "", description: "" });
+      setNewProduct({
+        id: "",
+        name: "",
+        price: "",
+        category: "",
+        description: "",
+        availableQuantity: "",
+      });
     } catch (error) {
       setAddError(error.message || "Failed to add product");
     }
@@ -90,6 +88,7 @@ const Admin = () => {
                 <th>Price</th>
                 <th>Category</th>
                 <th>Description</th>
+                <th>Available Quantity</th> 
                 <th>Actions</th>
               </tr>
             </thead>
@@ -148,6 +147,19 @@ const Admin = () => {
                   />
                 </td>
                 <td>
+                  <input
+                    type="number"
+                    placeholder="Available Quantity"
+                    value={newProduct.availableQuantity}
+                    onChange={(e) =>
+                      setNewProduct({
+                        ...newProduct,
+                        availableQuantity: e.target.value,
+                      })
+                    }
+                  />
+                </td>
+                <td>
                   <button type="submit">Add Product</button>
                 </td>
               </tr>
@@ -168,13 +180,14 @@ const Admin = () => {
               <th>Price</th>
               <th>Category</th>
               <th>Description</th>
+              <th>Available Quantity</th> 
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.length === 0 ? (
               <tr>
-                <td colSpan="6">No products available</td>
+                <td colSpan="7">No products available</td>
               </tr>
             ) : (
               products.map((product, index) => (
@@ -184,6 +197,7 @@ const Admin = () => {
                   <td>${product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.description}</td>
+                  <td>{product.availableQuantity}</td> 
                   <td>
                     <button>Delete</button>
                   </td>
@@ -198,3 +212,4 @@ const Admin = () => {
 };
 
 export default Admin;
+
