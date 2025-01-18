@@ -11,13 +11,15 @@ const Cart = () => {
     setCart(cart.filter((product) => product.id !== productId));
   };
 
-  const handleChangeQuantity = (productId, action) => {
+  const handleChangeQuantity = (productId, action, availableQuantity) => {
     setCart(
       cart.map((product) =>
         product.id === productId
           ? {
               ...product,
-              quantity: action === "increase" ? product.quantity + 1 : Math.max(product.quantity - 1, 1),
+              quantity: action === "increase"
+                ? Math.min(product.quantity + 1, availableQuantity) // زيادة الكمية مع التحقق من الكمية المتاحة
+                : Math.max(product.quantity - 1, 1), // تقليل الكمية مع التأكد من أنها لا تصبح أقل من 1
             }
           : product
       )
@@ -53,10 +55,11 @@ const Cart = () => {
                   <h3 style={{ margin: 0 }}>{product.name}</h3>
                   <p style={{ margin: "5px 0" }}>Price: ${product.price}</p>
                   <p style={{ margin: "5px 0" }}>Quantity: {product.quantity}</p>
+                  <p style={{ margin: "5px 0" }}>Available Quantity: {product.availableQuantity}</p>
                 </div>
                 <div style={{ display: "flex", gap: "10px" }}>
                   <button
-                    onClick={() => handleChangeQuantity(product.id, "decrease")}
+                    onClick={() => handleChangeQuantity(product.id, "decrease", product.availableQuantity)}
                     style={{
                       padding: "5px 10px",
                       backgroundColor: "#f0ad4e",
@@ -69,7 +72,7 @@ const Cart = () => {
                     -
                   </button>
                   <button
-                    onClick={() => handleChangeQuantity(product.id, "increase")}
+                    onClick={() => handleChangeQuantity(product.id, "increase", product.availableQuantity)}
                     style={{
                       padding: "5px 10px",
                       backgroundColor: "#5cb85c",
