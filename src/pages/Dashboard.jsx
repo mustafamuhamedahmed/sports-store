@@ -1,65 +1,122 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import "../styles/Dashboard.css";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);  
-  const [editedUser, setEditedUser] = useState({
-    name: "",
-    email: "",
-    address: "",
-  });
+  const [userRole, setUserRole] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState(""); 
+  const [messageType, setMessageType] = useState(""); 
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = () => {
-      const currentUser = {
-        name: "Mustafa Mohammed",
-        email: "Mustafa@example.com",
-        address: "123 Main St, City, Country",
-      };
+    const storedRole = localStorage.getItem("userRole");
+    const storedName = localStorage.getItem("userName");
+    const storedEmail = localStorage.getItem("userEmail");
 
-      setUser(currentUser);
-      setEditedUser(currentUser); 
-      setIsLoading(false);
-    };
+    if (storedRole === "Customer" && storedName && storedEmail) {
+      setUserRole(storedRole);
+      setUserName(storedName);
+      setEmail(storedEmail);
+      setLoading(false);
+    } else {
+      navigate("/login"); 
+    }
+  }, [navigate]);
 
-    fetchUserData();
-  }, []);
-
-  const handleEditClick = () => {
+  const handleEdit = () => {
+    setNewName(userName);
+    setNewEmail(email);
     setIsEditing(true);
   };
 
-  const handleCancelEdit = () => {
+  const handleSaveChanges = () => {
+    if (!newName || !newEmail) {
+      setError("Both name and email are required.");
+      return;
+    }
+
+
+    localStorage.setItem("userName", newName);
+    localStorage.setItem("userEmail", newEmail);
+
+    setUserName(newName);
+    setEmail(newEmail);
     setIsEditing(false);
-    setEditedUser(user);  
+    setError(""); 
+
+    setMessage("Profile updated successfully!");
+    setMessageType("success");
+
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
   };
 
-  const handleSaveEdit = () => {
-    setUser(editedUser);  
-    setIsEditing(false);
+  const handleLogout = () => {
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    navigate("/login");
+
+    setMessage("Logged out successfully!");
+    setMessageType("success");
+
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
   };
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="dashboard">
-      <h1>Welcome, {user.name}</h1>
+    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
+      <h1>Welcome to your Dashboard, {userName}!</h1>
 
-      <div className="dashboard__info">
-        <h2>Your Account Information</h2>
-        {isEditing ? (
+      <div>
+        <h2>Customer Dashboard</h2>
+        <p>Here you can manage your orders, view your profile, and more.</p>
+      </div>
+
+      {/* عرض رسالة التأكيد */}
+      {message && (
+        <div style={{
+          padding: "10px",
+          margin: "20px 0",
+          backgroundColor: messageType === "success" ? "green" : "red",
+          color: "white",
+          borderRadius: "5px"
+        }}>
+          {message}
+        </div>
+      )}
+
+      <div style={{ marginTop: "20px" }}>
+        <h3>Your Profile</h3>
+        <p><strong>Name:</strong> {userName}</p>
+        <p><strong>Email:</strong> {email}</p>
+
+        {!isEditing ? (
+          <div>
+            <button onClick={handleEdit}>Edit Profile</button>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        ) : (
           <div>
             <label>
               Name:
               <input
                 type="text"
-                value={editedUser.name}
-                onChange={(e) => setEditedUser({ ...editedUser, name: e.target.value })}
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
               />
             </label>
             <br />
@@ -67,37 +124,16 @@ const Dashboard = () => {
               Email:
               <input
                 type="email"
-                value={editedUser.email}
-                onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
               />
             </label>
             <br />
-            <label>
-              Address:
-              <input
-                type="text"
-                value={editedUser.address}
-                onChange={(e) => setEditedUser({ ...editedUser, address: e.target.value })}
-              />
-            </label>
-            <br />
-            <button onClick={handleSaveEdit}>Save</button>
-            <button onClick={handleCancelEdit}>Cancel</button>
-          </div>
-        ) : (
-          <div>
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Address:</strong> {user.address}</p>
-            <button onClick={handleEditClick}>Edit Profile</button>
+            {error && <div style={{ color: "red" }}>{error}</div>}
+            <button onClick={handleSaveChanges}>Save Changes</button>
+            <button onClick={() => setIsEditing(false)}>Cancel</button>
           </div>
         )}
-      </div>
-
-      <div className="dashboard__actions">
-        <Link to="/orders" className="dashboard__link">
-          View Orders
-        </Link>
       </div>
     </div>
   );
