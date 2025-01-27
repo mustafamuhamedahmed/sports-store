@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 
@@ -15,7 +15,8 @@ const Register = () => {
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(true);
   const [isNameValid, setIsNameValid] = useState(true);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const baseUrl = "http://localhost:8080/";
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -59,7 +60,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://your-api-url.com/register", {
+      const response = await fetch(`${baseUrl}signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,11 +72,11 @@ const Register = () => {
         }),
       });
 
-      const data = await response.json(); 
+      const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (response.ok) {
         console.log("Registration successful:", data);
-        navigate("/login"); 
+        navigate("/login");
       } else {
         setError(data.message || "Registration failed.");
       }
