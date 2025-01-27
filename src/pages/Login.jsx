@@ -10,10 +10,9 @@ const Login = () => {
   const [error, setError] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
-  const [userRole, setUserRole] = useState("");  
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const baseUrl = "http://localhost:8080/";
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,7 +48,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://your-api-url.com/login", {
+      const response = await fetch(`${baseUrl}signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,22 +59,35 @@ const Login = () => {
         }),
       });
 
-      const data = await response.json(); 
+      const data = await response.json();
 
-      if (response.ok && data.success) {
-        const { role } = data;
-        setUserRole(role);
-        setIsAuthenticated(true);
-        console.log("Access granted - " + role + " Page");
+      if (response.ok) {
+        const { jwtToken, userId, userRole } = data;
 
-        if (role === "Customer") {
-          navigate("/dashboard"); 
-        } else if (role === "Admin") {
-          navigate("/admin"); 
+        localStorage.setItem("jwtToken", jwtToken);
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("userRole", userRole);
+
+        if (userRole === "CUSTOMER") {
+          const productsResponse = await fetch(`${baseUrl}api/customer/products`, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${jwtToken}`,
+            },
+          });
+
+          if (productsResponse.ok) {
+            const products = await productsResponse.json();
+            console.log("Products:", products);
+            navigate("/dashboard");
+          } else {
+            setError("Failed to fetch products.");
+          }
+        } else {
+          setError("Unauthorized user role.");
         }
       } else {
         setError(data.message || "Incorrect email or password.");
-        setIsAuthenticated(false);
       }
     } catch (error) {
       setError("An error occurred. Please try again.");
@@ -117,20 +129,6 @@ const Login = () => {
         onClick={handleLogin}
         disabled={loading}
       />
-
-      {isAuthenticated && (
-        <div style={{ color: "green", marginTop: "20px" }}>
-          {userRole === "Customer"
-            ? "Access granted! Redirecting to Customer dashboard..."
-            : "Access granted! Redirecting to Admin page..."}
-        </div>
-      )}
-      
-      {!isAuthenticated && error && (
-        <div style={{ color: "red", marginTop: "20px" }}>
-          {error}
-        </div>
-      )}
     </div>
   );
 };
