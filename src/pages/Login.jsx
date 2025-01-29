@@ -14,14 +14,8 @@ const Login = () => {
   const navigate = useNavigate();
   const baseUrl = "http://localhost:8080/";
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePassword = (password) => {
-    return password.length >= 6;
-  };
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePassword = (password) => password.length >= 6;
 
   const handleLogin = async () => {
     setError("");
@@ -53,36 +47,21 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
         const { jwtToken, userId, userRole } = data;
-
         localStorage.setItem("jwtToken", jwtToken);
         localStorage.setItem("userId", userId);
         localStorage.setItem("userRole", userRole);
 
-        if (userRole === "CUSTOMER") {
-          const productsResponse = await fetch(`${baseUrl}api/customer/products`, {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${jwtToken}`,
-            },
-          });
+        console.log("User Role:", userRole);
 
-          if (productsResponse.ok) {
-            const products = await productsResponse.json();
-            console.log("Products:", products);
-            navigate("/dashboard");
-          } else {
-            setError("Failed to fetch products.");
-          }
+        if (userRole === "CUSTOMER") {
+          navigate("/dashboard");
         } else {
           setError("Unauthorized user role.");
         }
@@ -91,7 +70,7 @@ const Login = () => {
       }
     } catch (error) {
       setError("An error occurred. Please try again.");
-      console.error(error);
+      console.error("Login error:", error.message);
     } finally {
       setLoading(false);
     }
@@ -124,11 +103,7 @@ const Login = () => {
         isValid={isPasswordValid}
       />
 
-      <Button
-        label={loading ? "Logging in..." : "Login"}
-        onClick={handleLogin}
-        disabled={loading}
-      />
+      <Button label={loading ? "Logging in..." : "Login"} onClick={handleLogin} disabled={loading} />
     </div>
   );
 };
