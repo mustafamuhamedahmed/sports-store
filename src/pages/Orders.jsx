@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 
@@ -7,7 +6,7 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState(""); 
-  const navigate = useNavigate();
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = () => {
@@ -63,7 +62,7 @@ const Orders = () => {
   });
 
   const handleViewDetails = (order) => {
-    navigate("/view-details", { state: { order } });
+    setSelectedOrder(order);
   };
 
   if (isLoading) {
@@ -112,6 +111,29 @@ const Orders = () => {
           <p>No orders found</p>
         )}
       </div>
+
+      {selectedOrder && (
+        <div style={{ marginTop: "20px", padding: "15px", border: "1px solid #ccc", borderRadius: "5px" }}>
+          <h2>Order Details</h2>
+          <p><strong>Order ID:</strong> {selectedOrder.id}</p>
+          <p><strong>Date:</strong> {selectedOrder.date}</p>
+          <p><strong>Total:</strong> ${selectedOrder.total}</p>
+          <p><strong>Status:</strong> {selectedOrder.status}</p>
+          <h3>Products:</h3>
+          <ul>
+            {selectedOrder.products.map((product, index) => (
+              <li key={index}>
+                {product.name} - ${product.price} x {product.quantity}
+              </li>
+            ))}
+          </ul>
+          <Button 
+            label="Close" 
+            onClick={() => setSelectedOrder(null)} 
+            style={{ marginTop: "10px" }}
+          />
+        </div>
+      )}
     </div>
   );
 };
