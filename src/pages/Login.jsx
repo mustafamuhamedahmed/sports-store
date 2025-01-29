@@ -53,10 +53,12 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        const { jwtToken, userId, userRole } = data;
+        const { jwtToken, userId, userRole, userName, userEmail } = data;
         localStorage.setItem("jwtToken", jwtToken);
         localStorage.setItem("userId", userId);
         localStorage.setItem("userRole", userRole);
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("userEmail", userEmail);
 
         console.log("User Role:", userRole);
 
@@ -109,3 +111,4 @@ const Login = () => {
 };
 
 export default Login;
+
