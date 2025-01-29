@@ -22,6 +22,9 @@ const Checkout = () => {
     phone: false,
   });
 
+  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone) => /^[0-9]{10,15}$/.test(phone);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -38,21 +41,21 @@ const Checkout = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let isValid = true;
-    const newErrors = { ...errors };
+    const newErrors = { name: false, email: false, address: false, phone: false };
 
-    if (!formData.name) {
+    if (!formData.name.trim()) {
       newErrors.name = true;
       isValid = false;
     }
-    if (!formData.email) {
+    if (!validateEmail(formData.email)) {
       newErrors.email = true;
       isValid = false;
     }
-    if (!formData.address) {
+    if (!formData.address.trim()) {
       newErrors.address = true;
       isValid = false;
     }
-    if (!formData.phone) {
+    if (!validatePhone(formData.phone)) {
       newErrors.phone = true;
       isValid = false;
     }
@@ -60,7 +63,7 @@ const Checkout = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      navigate("/payment", {
+      navigate("/orders", {
         state: { 
           cart,
           totalPrice,
@@ -142,7 +145,7 @@ const Checkout = () => {
           required
           error={errors.phone}
         />
-        <Button type="submit" label="Proceed to Payment" />
+        <Button type="submit" label="Proceed to Orders" />
       </form>
     </div>
   );
