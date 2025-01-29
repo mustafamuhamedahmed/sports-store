@@ -16,10 +16,10 @@ const Checkout = () => {
   });
 
   const [errors, setErrors] = useState({
-    name: false,
-    email: false,
-    address: false,
-    phone: false,
+    name: "",
+    email: "",
+    address: "",
+    phone: "",
   });
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -34,29 +34,29 @@ const Checkout = () => {
 
     setErrors({
       ...errors,
-      [name]: false,
+      [name]: "",
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let isValid = true;
-    const newErrors = { name: false, email: false, address: false, phone: false };
+    const newErrors = { name: "", email: "", address: "", phone: "" };
 
     if (!formData.name.trim()) {
-      newErrors.name = true;
+      newErrors.name = "Full Name is required.";
       isValid = false;
     }
     if (!validateEmail(formData.email)) {
-      newErrors.email = true;
+      newErrors.email = "Please enter a valid email address.";
       isValid = false;
     }
     if (!formData.address.trim()) {
-      newErrors.address = true;
+      newErrors.address = "Shipping Address is required.";
       isValid = false;
     }
     if (!validatePhone(formData.phone)) {
-      newErrors.phone = true;
+      newErrors.phone = "Please enter a valid phone number (10-15 digits).";
       isValid = false;
     }
 
@@ -70,8 +70,6 @@ const Checkout = () => {
           formData 
         }
       });
-    } else {
-      alert("Please fill out all fields correctly.");
     }
   };
 
@@ -120,6 +118,7 @@ const Checkout = () => {
           onChange={handleInputChange}
           required
           error={errors.name}
+          helperText={errors.name}
         />
         <InputField
           label="Email Address"
@@ -128,6 +127,7 @@ const Checkout = () => {
           onChange={handleInputChange}
           required
           error={errors.email}
+          helperText={errors.email}
         />
         <InputField
           label="Shipping Address"
@@ -136,6 +136,7 @@ const Checkout = () => {
           onChange={handleInputChange}
           required
           error={errors.address}
+          helperText={errors.address}
         />
         <InputField
           label="Phone Number"
@@ -144,6 +145,7 @@ const Checkout = () => {
           onChange={handleInputChange}
           required
           error={errors.phone}
+          helperText={errors.phone}
         />
         <Button type="submit" label="Proceed to Orders" />
       </form>
