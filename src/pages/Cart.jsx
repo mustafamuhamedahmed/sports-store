@@ -18,8 +18,8 @@ const Cart = () => {
           ? {
               ...product,
               quantity: action === "increase"
-                ? Math.min(product.quantity + 1, availableQuantity) // زيادة الكمية مع التحقق من الكمية المتاحة
-                : Math.max(product.quantity - 1, 1), // تقليل الكمية مع التأكد من أنها لا تصبح أقل من 1
+                ? Math.min(product.quantity + 1, availableQuantity) 
+                : Math.max(product.quantity - 1, 1), 
             }
           : product
       )
