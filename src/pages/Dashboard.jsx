@@ -10,9 +10,10 @@ const Dashboard = () => {
   const [newName, setNewName] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [error, setError] = useState("");
-  const [message, setMessage] = useState(""); 
+  const [message, setMessage] = useState("");
+  const [products, setProducts] = useState([]);
   const [messageType, setMessageType] = useState(""); 
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,15 +21,38 @@ const Dashboard = () => {
     const storedName = localStorage.getItem("userName");
     const storedEmail = localStorage.getItem("userEmail");
 
-    if (storedRole === "Customer" && storedName && storedEmail) {
+    if (storedRole === "CUSTOMER" && storedName && storedEmail) {
       setUserRole(storedRole);
       setUserName(storedName);
       setEmail(storedEmail);
       setLoading(false);
+
+      fetchProducts();
     } else {
-      navigate("/login"); 
+      navigate("/login");
     }
   }, [navigate]);
+
+  const fetchProducts = async () => {
+    const jwtToken = localStorage.getItem("jwtToken");
+    try {
+      const response = await fetch("/api/customer/products", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${jwtToken}`,
+        },
+      });
+
+      if (response.ok) {
+        const productsData = await response.json();
+        setProducts(productsData); 
+      } else {
+        setError("Failed to fetch products.");
+      }
+    } catch (error) {
+      setError("Error fetching products.");
+    }
+  };
 
   const handleEdit = () => {
     setNewName(userName);
@@ -42,14 +66,13 @@ const Dashboard = () => {
       return;
     }
 
-
     localStorage.setItem("userName", newName);
     localStorage.setItem("userEmail", newEmail);
 
     setUserName(newName);
     setEmail(newEmail);
     setIsEditing(false);
-    setError(""); 
+    setError("");
 
     setMessage("Profile updated successfully!");
     setMessageType("success");
@@ -63,6 +86,7 @@ const Dashboard = () => {
     localStorage.removeItem("userRole");
     localStorage.removeItem("userName");
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("jwtToken");
     navigate("/login");
 
     setMessage("Logged out successfully!");
@@ -86,7 +110,6 @@ const Dashboard = () => {
         <p>Here you can manage your orders, view your profile, and more.</p>
       </div>
 
-      {/* عرض رسالة التأكيد */}
       {message && (
         <div style={{
           padding: "10px",
@@ -133,6 +156,19 @@ const Dashboard = () => {
             <button onClick={handleSaveChanges}>Save Changes</button>
             <button onClick={() => setIsEditing(false)}>Cancel</button>
           </div>
+        )}
+      </div>
+
+      <div style={{ marginTop: "30px" }}>
+        <h3>Available Products</h3>
+        {products.length === 0 ? (
+          <p>No products available.</p>
+        ) : (
+          <ul>
+            {products.map((product, index) => (
+              <li key={index}>{product.name}</li> 
+            ))}
+          </ul>
         )}
       </div>
     </div>
