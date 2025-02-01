@@ -12,7 +12,7 @@ const Login = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
 
   const navigate = useNavigate();
-  const baseUrl = "http://localhost:8080/"; // يمكنك تعديل هذا الرابط حسب عنوان الـ API الخاص بك
+  const baseUrl = "http://localhost:8080/";
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const validatePassword = (password) => password.length >= 6;
@@ -42,7 +42,6 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // إرسال طلب تسجيل الدخول إلى الخادم
       const response = await fetch(`${baseUrl}signin`, {
         method: "POST",
         headers: {
@@ -55,8 +54,7 @@ const Login = () => {
 
       if (response.ok) {
         const { jwtToken, userId, userRole, userName, userEmail } = data;
-        
-        // تخزين البيانات في localStorage
+
         localStorage.setItem("jwtToken", jwtToken);
         localStorage.setItem("userId", userId);
         localStorage.setItem("userRole", userRole);
@@ -65,24 +63,8 @@ const Login = () => {
 
         console.log("User Role:", userRole);
 
-        // التوجيه إلى /dashboard بعد التحقق من الدور
         if (userRole === "CUSTOMER") {
-          // بعد تسجيل الدخول بنجاح، نقوم بإرسال طلب الـ API الخاص بالمنتجات
-          const productResponse = await fetch("/api/customer/products", {
-            method: "GET",
-            headers: {
-              "Authorization": `Bearer ${jwtToken}`, // نرسل التوكن مع الطلب
-            },
-          });
-
-          if (productResponse.ok) {
-            const productsData = await productResponse.json();
-            console.log("Products:", productsData); // عرض المنتجات في الكونسول
-            // هنا يمكنك تخزين أو عرض البيانات في الواجهة حسب الحاجة
-            navigate("/dashboard"); // التوجيه إلى الـ Dashboard بعد النجاح
-          } else {
-            setError("Failed to fetch products.");
-          }
+          navigate("/dashboard");
         } else {
           setError("Unauthorized user role.");
         }
@@ -130,4 +112,3 @@ const Login = () => {
 };
 
 export default Login;
-
