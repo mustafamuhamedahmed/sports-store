@@ -83,10 +83,7 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("jwtToken");
+    localStorage.clear();
     navigate("/login");
 
     setMessage("Logged out successfully!");
