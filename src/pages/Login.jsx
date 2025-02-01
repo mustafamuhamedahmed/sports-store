@@ -64,7 +64,7 @@ const Login = () => {
         console.log("User Role:", userRole);
 
         if (userRole === "CUSTOMER") {
-          navigate("/dashboard");
+          navigate("/shop");
         } else {
           setError("Unauthorized user role.");
         }
