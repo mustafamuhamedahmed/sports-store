@@ -50,7 +50,16 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const text = await response.text(); 
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (jsonError) {
+        console.error("Invalid JSON response:", text);
+        setError("Server returned an invalid response.");
+        return;
+      }
 
       if (response.ok) {
         const { jwtToken, userId, userRole, userName, userEmail } = data;
@@ -64,7 +73,7 @@ const Login = () => {
         console.log("User Role:", userRole);
 
         if (userRole === "CUSTOMER") {
-          navigate("/shop");
+          navigate("/dashboard");
         } else {
           setError("Unauthorized user role.");
         }
@@ -72,8 +81,8 @@ const Login = () => {
         setError(data.message || "Incorrect email or password.");
       }
     } catch (error) {
-      setError("An error occurred. Please try again.");
       console.error("Login error:", error.message);
+      setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
