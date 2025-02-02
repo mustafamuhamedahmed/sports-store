@@ -23,7 +23,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/customer/products");
+        const response = await fetch("http://localhost:8080/api/admin/products");
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
@@ -71,7 +71,7 @@ const Admin = () => {
       formData.append("availableQuantity", newProduct.availableQuantity);
       formData.append("image", newProduct.image);
 
-      const response = await fetch("http://localhost:8080/api/customer/products", {
+      const response = await fetch("http://localhost:8080/api/admin/products", {
         method: "POST",
         body: formData,
       });
@@ -123,7 +123,7 @@ const Admin = () => {
       formData.append("availableQuantity", newProduct.availableQuantity);
       formData.append("image", newProduct.image);
 
-      const response = await fetch(`http://localhost:8080/api/customer/products/${newProduct.id}`, {
+      const response = await fetch(`http://localhost:8080/api/admin/products/${newProduct.id}`, {
         method: "PUT",
         body: formData,
       });
