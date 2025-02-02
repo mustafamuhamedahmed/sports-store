@@ -21,7 +21,7 @@ const Dashboard = () => {
     const storedName = localStorage.getItem("userName");
     const storedEmail = localStorage.getItem("userEmail");
 
-    if (storedRole === "CUSTOMER" && storedName && storedEmail) {
+    if (storedRole && storedRole === "CUSTOMER" && storedName && storedEmail) {
       setUserRole(storedRole);
       setUserName(storedName);
       setEmail(storedEmail);
@@ -35,6 +35,11 @@ const Dashboard = () => {
 
   const fetchProducts = async () => {
     const jwtToken = localStorage.getItem("jwtToken");
+    if (!jwtToken) {
+      setError("Authentication token is missing.");
+      return;
+    }
+
     try {
       const response = await fetch("/api/customer/products", {
         method: "GET",
@@ -163,7 +168,7 @@ const Dashboard = () => {
         ) : (
           <ul>
             {products.map((product, index) => (
-              <li key={index}>{product.name}</li> 
+              <li key={index}>{product.name}</li>
             ))}
           </ul>
         )}
