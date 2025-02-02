@@ -41,7 +41,7 @@ const Dashboard = () => {
     }
 
     try {
-      const response = await fetch("/api/customer/products", {
+      const response = await fetch("http://localhost:8080/api/customer/products", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${jwtToken}`,
